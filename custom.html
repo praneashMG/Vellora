@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+
+<head>
+    <link rel="icon" type="image/png" href="assets/fav.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Wedding Invitation & Stationery Designer</title>
+    <!-- Tailwind + FontAwesome -->
+    <script src="tailwind.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        /* ========== THEME VARIABLES (vibrant modern wedding) ========== */
+        :root,
+        html[data-theme='light'] {
+            --bg-body: #FFFFFF; /* Pure bright white for crisp contrast */
+            --text-primary: #1A1A1A; /* Sharp dark text */
+            --text-secondary: #5A5A5A;
+            --accent: #FF3366; /* Vibrant, eye-catching Watermelon/Hot Pink */
+            --accent-dark: #E60039;
+            --primary: #2D0010;
+            --card-bg: #FFFFFF;
+            --border-light: #EBEBEB;
+            --hover-bg: #FFF0F5;
+            --footer-bg: #1A1114;
+            --footer-text: #F8F8F8;
+            --rating-star: #FFD700;
+        }
+
+        html[data-theme='dark'] { color-scheme: dark;
+            --bg-body: #121212; /* Deep dark for contrast */
+            --text-primary: #FFFFFF;
+            --text-secondary: #B3B3B3;
+            --accent: #FF4D79; /* Bright neon-leaning pink for dark mode */
+            --accent-dark: #FF1A53;
+            --primary: #4D001A;
+            --card-bg: #1E1E1E;
+            --border-light: #333333;
+            --hover-bg: #2B161D;
+            --footer-bg: #0A0A0A;
+            --footer-text: #CCCCCC;
+            --rating-star: #FFD700;
+        }
+
+        body {
+            background: var(--bg-body);
+            color: var(--text-primary);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            transition: background-color 0.25s ease, color 0.2s;
+            overflow-x: hidden;
+        }
+
+        .text-accent {
+            color: var(--accent);
+        }
+
+        .bg-accent {
+            background-color: var(--accent);
+        }
+
+        .border-accent {
+            border-color: var(--accent);
+        }
+
+        .hover\:bg-accent\/10:hover {
+            background-color: color-mix(in srgb, var(--accent) 10%, transparent);
+        }
+
+        .bg-card {
+            background-color: var(--card-bg);
+        }
+
+        .text-secondary {
+            color: var(--text-secondary);
+        }
+
+        .border-border {
+            border-color: var(--border-light);
+        }
+
+        /* Navbar + glassmorphic */
+        #main-header nav {
+            background: var(--card-bg);
+            backdrop-filter: blur(0px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        html[data-theme='dark'] #main-header nav {
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(4px);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-link.active {
+            color: var(--accent);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: 0.2s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Dropdown style */
+        .dropdown-wrapper {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 110%;
+            left: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 0.75rem;
+            min-width: 190px;
+            padding: 0.4rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .dropdown-wrapper.open .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 1rem;
+            color: var(--text-primary);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .dropdown-menu a:hover {
+            background: var(--hover-bg);
+            color: var(--accent);
+            transform: translateX(4px);
+        }
+
+        /* Tire comparison cards */
+        .tire-card {
+            transition: all 0.2s;
+            background: var(--card-bg);
+            border-radius: 1.5rem;
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+        }
+
+        .tire-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border-radius: 9999px;
+            transition: 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dark);
+            transform: scale(1.02);
+        }
+
+        .btn-outline {
+            border: 1.5px solid var(--accent);
+            color: var(--accent);
+            border-radius: 9999px;
+            background: transparent;
+            transition: 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .rating-star {
+            color: var(--rating-star);
+        }
+
+        .status-badge {
+            background: #10b98120;
+            color: #10b981;
+            border-radius: 999px;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .vehicle-track {
+            background: var(--card-bg);
+            border-left: 4px solid var(--accent);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.7s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        button:focus,
+        .dropdown-toggle:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .dropdown-toggle {
+            -webkit-appearance: none;
+            appearance: none;
+            border: none;
+            background: transparent;
+        }
+
+        @media (max-width: 1279px) {
+            .dropdown-menu {
+                position: static;
+                display: none;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                margin-top: 0.5rem;
+            }
+
+            .dropdown-wrapper.open .dropdown-menu {
+                display: block;
+            }
+        }
+
+        /* Mobile Drawer Link Hover & Active Underlines */
+        #mobile-drawer nav a:not(.rounded-full) {
+            position: relative;
+            transition: color 0.2s ease;
+            width: fit-content;
+        }
+
+        #mobile-drawer nav a.active:not(.rounded-full) {
+            color: var(--accent) !important;
+        }
+
+        #mobile-drawer nav a:not(.rounded-full)::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.2s ease;
+        }
+
+        #mobile-drawer nav a:not(.rounded-full):hover::after {
+            width: 100%;
+        }
+
+        /* RTL support for navigation spacing, underlines and menus */
+        html[dir="rtl"] #main-header .space-x-8 > :not([hidden]) ~ :not([hidden]) {
+            margin-right: 2rem !important;
+            margin-left: 0 !important;
+        }
+        html[dir="rtl"] .dropdown-menu {
+            left: auto;
+            right: 0;
+        }
+        html[dir="rtl"] .dropdown-menu a:hover {
+            transform: translateX(-4px);
+        }
+        html[dir="rtl"] .hover\:translate-x-1:hover {
+            transform: translateX(-0.25rem) !important;
+        }
+        html[dir="rtl"] .nav-link::after {
+            left: auto;
+            right: 0;
+        }
+        html[dir="rtl"] #mobile-drawer nav a:not(.rounded-full)::after {
+            left: auto;
+            right: 0;
+        }
+    </style>
+    <style id="typography-alignment">
+        /* Typography Alignment & Consistency Overrides */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 500 !important;
+        }
+        /* Keep paragraph weights 400-500 */
+        p:not(.font-medium), div.text-secondary {
+            font-weight: 400 !important;
+        }
+        /* Ensure proper text alignment inside cards */
+        .tire-card, .bg-card, .card {
+            text-align: left !important;
+        }
+        .text-center .tire-card, .text-center .bg-card {
+            text-align: left !important;
+        }
+        /* Reduce overly wide paragraphs inside containers for readability */
+        .container p, section > div > p.text-secondary {
+            max-width: 65ch;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .tire-card p, .bg-card p, .card p, .text-left p {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            max-width: none !important;
+        }
+    </style>
+    <style id="cta-improvements">
+        /* Primary CTA Highlights */
+        .btn-primary {
+            box-shadow: 0 4px 12px 0 rgba(220, 38, 38, 0.4);
+            color: #ffffff !important;
+        }
+        html[data-theme='dark'] .btn-primary {
+            box-shadow: 0 4px 12px 0 rgba(239, 68, 68, 0.3);
+            color: #0f172a !important; /* High contrast in dark mode */
+            font-weight: 600 !important;
+        }
+        
+        /* Hover Color Consistency & Contrast */
+        .btn-primary:hover {
+            background-color: var(--accent-dark) !important;
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 6px 16px 0 rgba(220, 38, 38, 0.5);
+        }
+        html[data-theme='dark'] .btn-primary:hover {
+            box-shadow: 0 6px 16px 0 rgba(239, 68, 68, 0.4);
+        }
+        
+        .btn-outline {
+            color: var(--accent) !important;
+            border-color: var(--accent) !important;
+        }
+        .btn-outline:hover {
+            background-color: var(--accent) !important;
+            color: #ffffff !important;
+            transform: translateY(-1px);
+        }
+        html[data-theme='dark'] .btn-outline:hover {
+            color: #0f172a !important; /* High contrast in dark mode */
+        }
+
+        /* Align CTA buttons consistently inside cards/grids */
+        .tire-card, .dashboard-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            gap: 1.25rem;
+        }
+        .tire-card > div:last-child, .dashboard-card > div:last-child, .dashboard-card > button:last-child {
+            margin-top: auto;
+        }
+    </style>
+    <style id="image-improvements">
+        /* Prevent image distortion globally */
+        img:not([src*="fav.png"]):not(.object-contain) {
+            object-fit: cover !important;
+        }
+        
+        /* Ensure proper background overlays for readability (apply to containers if needed) */
+        .bg-overlay {
+            position: relative;
+        }
+        .bg-overlay::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.95) 100%);
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .bg-overlay > *:not(img) {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+    <style id="responsive-fixes">
+        /* Guarantee text wrapping on small screens */
+        body {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            -ms-word-break: break-all;
+            word-break: break-word;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Fixed Header -->
+    <header class="fixed top-0 left-0 w-full z-50 pt-3" id="main-header">
+        <nav
+            class="max-w-7xl mx-auto px-4 md:px-5 py-3 md:py-3 rounded-2xl flex items-center justify-between backdrop-blur-sm border border-border">
+            <a href="index.html" class="text-xl md:text-2xl font-bold tracking-tight text-accent flex items-center" style="font-weight: 700 !important;"><span class="inline-flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full bg-accent text-white mr-2 shadow-sm flex-shrink-0"><i class="fas fa-pen-fancy text-xs md:text-sm"></i></span><span class="truncate">Vellora</span></a>
+            <!-- Desktop Center Nav -->
+            <div class="hidden xl:flex items-center space-x-8 rtl:space-x-reverse text-sm font-medium">
+                <div class="dropdown-wrapper">
+                    <button class="nav-link active dropdown-toggle flex items-center gap-1.5 whitespace-nowrap"><span>Home</span><svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 11.5l-7 7-7-7"></path></svg></button>
+                    <div class="dropdown-menu">
+                        <a href="index.html" class="text-accent font-medium">Classic Layout</a>
+                        <a href="home2.html">Modern Layout</a>
+                    </div>
+                </div>
+                <a href="products.html" class="nav-link">Products</a>
+                <a href="custom.html" class="nav-link">Custom Design</a>
+                <a href="portfolio.html" class="nav-link">Portfolio</a>
+                <a href="packages.html" class="nav-link">Packages</a>
+                <a href="about.html" class="nav-link">About Us</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+            <div class="hidden xl:flex items-center gap-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-accent/10"><i
+                        class="fas fa-moon light-icon"></i><i class="fas fa-sun dark-icon hidden"></i></button>
+                <button id="lang-icon" class="p-2 rounded-full hover:bg-accent/10"><i class="fas fa-exchange-alt"></i></button>
+                <a href="contact.html" class="btn-primary px-6 py-2 text-sm font-medium shadow-sm"><i class="fas fa-calendar-check mr-2"></i> Book Consultation</a>
+            </div>
+            <div class="xl:hidden flex items-center gap-3">
+                <button id="mobile-menu-open"><i class="fas fa-bars text-2xl"></i></button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-drawer" class="fixed inset-0 z-50 pointer-events-none transition-all duration-300">
+        <div id="drawer-backdrop" class="absolute inset-0 bg-black/50 opacity-0 transition pointer-events-none"></div>
+        <div id="drawer-panel"
+            class="absolute top-0 left-0 w-80 h-full bg-card shadow-2xl transform -translate-x-full transition-transform duration-300 p-6 overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-border pb-4"><a href="index.html" class="text-xl md:text-2xl font-bold tracking-tight text-accent flex items-center" style="font-weight: 700 !important; color: var(--accent) !important;"><span class="inline-flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full bg-accent text-white mr-2 shadow-sm flex-shrink-0"><i class="fas fa-pen-fancy text-xs md:text-sm"></i></span><span class="truncate">Vellora</span></a><button id="drawer-close"><i
+                        class="fas fa-times text-xl"></i></button></div>
+            <nav class="flex flex-col gap-3 mt-6">
+                <div><button id="mobile-home-toggle"
+                        class="flex w-full justify-between items-center py-2 font-medium text-accent">Home <i
+                            class="fas fa-chevron-down text-xs"></i></button>
+                    <div id="mobile-home-submenu" class="pl-4 flex flex-col gap-2 mt-1 border-l border-border">
+                        <a href="index.html" class="text-accent font-medium">Classic Layout</a><a href="home2.html">Modern Layout</a>
+                    </div>
+                </div>
+                <a href="products.html" class="py-2 font-medium">Products</a>
+                <a href="custom.html" class="py-2 font-medium">Custom Design</a>
+                <a href="portfolio.html" class="py-2 font-medium">Portfolio</a>
+                <a href="packages.html" class="py-2 font-medium">Packages</a>
+                <a href="about.html" class="py-2 font-medium">About Us</a>
+                <a href="contact.html" class="py-2 font-medium">Contact</a>
+                <div class="pt-4 border-t border-border mt-4">
+                    <a href="contact.html" class="block w-full text-center bg-accent rounded-full py-3 text-white font-medium shadow-sm"><i
+                            class="fas fa-calendar-check mr-2"></i> Book Consultation</a>
+                </div>
+                <div class="flex justify-around mt-6 pt-2"><button id="mobile-theme-btn" class="p-2"><i
+                            class="fas fa-moon"></i> Theme</button><button id="mobile-rtl-btn" class="p-2"><i
+                            class="fas fa-exchange-alt"></i> RTL</button></div>
+            </nav>
+        </div>
+    </div>
+<main>
+  <!-- ============================================================
+  SECTION 1: PAGE HERO - 100vh Centered Background
+  ============================================================ -->
+  <section class="relative min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat mb-16 lg:mb-20" style="background-image: url('assets/bb.jpg');">
+    <!-- Dark Overlay -->
+    <div class="absolute inset-0 bg-black/60"></div>
+    
+    <!-- Centered Content -->
+    <div class="relative z-10 text-center px-5 max-w-3xl mx-auto flex flex-col items-center pt-20">
+      <nav class="flex items-center justify-center gap-2 text-xs text-white/70 mb-5">
+        <a href="index.html" class="hover:text-white transition-colors">Home</a>
+        <i class="fas fa-chevron-right text-[10px] opacity-50"></i>
+        <span class="text-white font-medium"></span>
+      </nav>
+      <span class="inline-block text-sm md:text-base font-semibold tracking-[0.25em] uppercase text-accent mb-4 drop-shadow-md"></span>
+      <h1 class="text-5xl md:text-6xl lg:text-7xl font-medium leading-tight mb-6 text-white drop-shadow-lg" style="font-weight: 500 !important;">
+        
+Bespoke Design<br><span class="text-accent drop-shadow-md">Just For You</span>
+      </h1>
+      <p class="text-white/90 text-lg md:text-xl lg:text-2xl leading-relaxed max-w-3xl mx-auto drop-shadow">
+        
+Experience our white-glove custom design process. We work closely with you from concept to delivery to ensure every detail is absolutely perfect.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+  SECTION 2: MAIN CONTENT / DESIGN STYLES — Centered heading + image grid
+  ============================================================ -->
+  <section class="max-w-7xl mx-auto px-5 mb-20 lg:mb-28">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="text-xs font-semibold tracking-[0.25em] uppercase text-accent">Choose Your Direction</span>
+      <h2 class="text-3xl md:text-4xl font-medium mt-2 mb-4" style="font-weight: 500 !important;">Popular Custom Styles</h2>
+      <p class="text-secondary text-base leading-relaxed">Not sure where to begin? Explore our most requested design directions — each can be fully customized.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Style 1 -->
+      <div class="group relative rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl" style="border-radius: 1.25rem;">
+        <img src="assets/yt1.jpg" alt="Classic elegant custom wedding invitation style" class="w-full h-72 object-cover transition-transform duration-700 group-hover:scale-110">
+        <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5 text-left">
+          <h3 class="text-lg font-medium text-white mb-1">Classic Elegance</h3>
+          <p class="text-white/80 text-xs leading-relaxed">Serif type, gold foil, ivory cotton paper</p>
+        </div>
+      </div>
+      <!-- Style 2 -->
+      <div class="group relative rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl" style="border-radius: 1.25rem;">
+        <img src="assets/yt2.jpg" alt="Modern minimalist custom wedding invitation style" class="w-full h-72 object-cover transition-transform duration-700 group-hover:scale-110">
+        <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5 text-left">
+          <h3 class="text-lg font-medium text-white mb-1">Modern Minimal</h3>
+          <p class="text-white/80 text-xs leading-relaxed">Sans-serif, clean layout, matte finish</p>
+        </div>
+      </div>
+      <!-- Style 3 -->
+      <div class="group relative rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl" style="border-radius: 1.25rem;">
+        <img src="assets/yt3.jpg" alt="Floral romantic custom wedding invitation style" class="w-full h-72 object-cover transition-transform duration-700 group-hover:scale-110">
+        <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5 text-left">
+          <h3 class="text-lg font-medium text-white mb-1">Floral Romantic</h3>
+          <p class="text-white/80 text-xs leading-relaxed">Hand-painted botanicals, soft pastels</p>
+        </div>
+      </div>
+      <!-- Style 4 -->
+      <div class="group relative rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl" style="border-radius: 1.25rem;">
+        <img src="assets/yt4.jpg" alt="Rustic vintage custom wedding invitation style" class="w-full h-72 object-cover transition-transform duration-700 group-hover:scale-110">
+        <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5 text-left">
+          <h3 class="text-lg font-medium text-white mb-1">Rustic Vintage</h3>
+          <p class="text-white/80 text-xs leading-relaxed">Kraft paper, botanical art, warm tones</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+  SECTION 3: KEY SERVICES / OFFERINGS — Split layout with customization options
+  ============================================================ -->
+  <section class="max-w-7xl mx-auto px-5 mb-20 lg:mb-28">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="text-xs font-semibold tracking-[0.25em] uppercase text-accent">Fully Customizable</span>
+      <h2 class="text-3xl md:text-4xl font-medium mt-2 mb-4" style="font-weight: 500 !important;">Every Detail, Your Choice</h2>
+      <p class="text-secondary text-base leading-relaxed">Customize every element of your suite — we'll guide you through each decision with samples and expert advice.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-10 items-center">
+      <!-- Left: Image -->
+      <div class="rounded-2xl overflow-hidden shadow-xl order-2 lg:order-1" style="border-radius: 1.5rem;">
+        <img src="assets/fg.jpg" alt="Custom design consultation with paper samples and color swatches" class="w-full h-[380px] lg:h-[520px] object-cover">
+      </div>
+      <!-- Right: Options grid -->
+      <div class="order-1 lg:order-2 grid grid-cols-2 gap-4">
+        <div class="bg-card border border-border rounded-2xl p-5 text-left transition-all duration-300 hover:shadow-lg" style="border-radius: 1.25rem;">
+          <div class="w-11 h-11 rounded-xl bg-accent/10 flex items-center justify-center mb-3">
+            <i class="fas fa-font text-accent"></i>
+          </div>
+          <h3 class="text-base font-medium mb-1.5">Typography</h3>
+          <p class="text-secondary text-xs leading-relaxed">Choose from 30+ serif, script, and sans-serif font pairings.</p>
+        </div>
+        <div class="bg-card border border-border rounded-2xl p-5 text-left transition-all duration-300 hover:shadow-lg" style="border-radius: 1.25rem;">
+          <div class="w-11 h-11 rounded-xl bg-accent/10 flex items-center justify-center mb-3">
+            <i class="fas fa-scroll text-accent"></i>
+          </div>
+          <h3 class="text-base font-medium mb-1.5">Paper Stock</h3>
+          <p class="text-secondary text-xs leading-relaxed">Cotton, linen, kraft, vellum, and handmade papers.</p>
+        </div>
+        <div class="bg-card border border-border rounded-2xl p-5 text-left transition-all duration-300 hover:shadow-lg" style="border-radius: 1.25rem;">
+          <div class="w-11 h-11 rounded-xl bg-accent/10 flex items-center justify-center mb-3">
+            <i class="fas fa-fill-drip text-accent"></i>
+          </div>
+          <h3 class="text-base font-medium mb-1.5">Ink & Foil</h3>
+          <p class="text-secondary text-xs leading-relaxed">Letterpress inks, gold, rose gold, silver, and copper foil.</p>
+        </div>
+        <div class="bg-card border border-border rounded-2xl p-5 text-left transition-all duration-300 hover:shadow-lg" style="border-radius: 1.25rem;">
+          <div class="w-11 h-11 rounded-xl bg-accent/10 flex items-center justify-center mb-3">
+            <i class="fas fa-cut text-accent"></i>
+          </div>
+          <h3 class="text-base font-medium mb-1.5">Finishing</h3>
+          <p class="text-secondary text-xs leading-relaxed">Edge painting, wax seals, deckled edges, and die-cuts.</p>
+        </div>
+        <div class="bg-card border border-border rounded-2xl p-5 text-left transition-all duration-300 hover:shadow-lg col-span-2" style="border-radius: 1.25rem;">
+          <div class="flex items-center gap-4">
+            <div class="w-11 h-11 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-box text-accent"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-medium mb-1">Matching Accessories</h3>
+              <p class="text-secondary text-xs leading-relaxed">Extend your theme to menus, programs, place cards, and signage for a cohesive look.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+  SECTION 4: BENEFITS / PROCESS — Centered heading + 4-step timeline
+  ============================================================ -->
+  <section class="max-w-7xl mx-auto px-5 mb-20 lg:mb-28">
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <span class="text-xs font-semibold tracking-[0.25em] uppercase text-accent">How Custom Design Works</span>
+      <h2 class="text-3xl md:text-4xl font-medium mt-2 mb-4" style="font-weight: 500 !important;">Four Simple Steps</h2>
+      <p class="text-secondary text-base leading-relaxed">A collaborative process that keeps you involved from the first sketch to the final unboxing.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Step 1 -->
+      <div class="bg-card border border-border rounded-2xl p-6 text-center transition-all duration-300 hover:shadow-lg" style="border-radius: 1.25rem;">
+        <div class="w-14 h-14 rounded-full bg-accent text-white flex items-center justify-center text-xl font-semibold mx-auto mb-4" style="font-weight: 600;">1</div>
+        <h3 class="text-base font-medium mb-2 text-center w-full mx-auto">Share Your Vision</h3>
+        <p class="text-secondary text-xs leading-relaxed text-center w-full mx-auto">Fill out our design brief with your inspiration, colors, and event details.</p>
+      </div>
+      <!-- Step 2 -->
+      <div class="bg-card border border-border rounded-2xl p-6 text-center transition-all duration-300 hover:shadow-lg" style="border-radius: 1.25rem;">
+        <div class="w-14 h-14 rounded-full bg-accent text-white flex items-center justify-center text-xl font-semibold mx-auto mb-4" style="font-weight: 600;">2</div>
+        <h3 class="text-base font-medium mb-2 text-center w-full mx-auto">Receive Concepts</h3>
+        <p class="text-secondary text-xs leading-relaxed">We send 2–3 design concepts within 5 business days for your review.</p>
+      </div>
+      <!-- Step 3 -->
+      <div class="bg-card border border-border rounded-2xl p-6 text-center transition-all duration-300 hover:shadow-lg" style="border-radius: 1.25rem;">
+        <div class="w-14 h-14 rounded-full bg-accent text-white flex items-center justify-center text-xl font-semibold mx-auto mb-4" style="font-weight: 600;">3</div>
+        <h3 class="text-base font-medium mb-2 text-center w-full mx-auto">Refine Together</h3>
+        <p class="text-secondary text-xs leading-relaxed text-center w-full mx-auto">Unlimited revisions until every detail is exactly how you want it.</p>
+      </div>
+      <!-- Step 4 -->
+      <div class="bg-card border border-border rounded-2xl p-6 text-center transition-all duration-300 hover:shadow-lg" style="border-radius: 1.25rem;">
+        <div class="w-14 h-14 rounded-full bg-accent text-white flex items-center justify-center text-xl font-semibold mx-auto mb-4" style="font-weight: 600;">4</div>
+        <h3 class="text-base font-medium mb-2 text-center w-full mx-auto">Print & Deliver</h3>
+        <p class="text-secondary text-xs leading-relaxed text-center w-full mx-auto">We print, inspect, and ship your suite directly to your door.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+  SECTION 5: ENGAGEMENT / TRUST — Portfolio showcase + testimonials
+  ============================================================ -->
+  <section class="max-w-7xl mx-auto px-5 mb-20 lg:mb-28">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="text-xs font-semibold tracking-[0.25em] uppercase text-accent">Recent Custom Work</span>
+      <h2 class="text-3xl md:text-4xl font-medium mt-2 mb-4" style="font-weight: 500 !important;">Designed for Couples Like You</h2>
+      <p class="text-secondary text-base leading-relaxed">A selection of recent custom suites — each one started as a blank page and a conversation.</p>
+    </div>
+
+    <!-- Portfolio mosaic -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+      <div class="rounded-2xl overflow-hidden shadow-lg group" style="border-radius: 1.25rem;">
+        <img src="assets/tr1.jpg" alt="Custom wedding invitation with gold foil" class="w-full h-48 md:h-56 object-cover transition-transform duration-500 group-hover:scale-110">
+      </div>
+      <div class="rounded-2xl overflow-hidden shadow-lg group" style="border-radius: 1.25rem;">
+        <img src="assets/tr2.jpg" alt="Custom minimalist wedding stationery" class="w-full h-48 md:h-56 object-cover transition-transform duration-500 group-hover:scale-110">
+      </div>
+      <div class="rounded-2xl overflow-hidden shadow-lg group" style="border-radius: 1.25rem;">
+        <img src="assets/tr3.jpg" alt="Custom letterpress wedding invitation detail" class="w-full h-48 md:h-56 object-cover transition-transform duration-500 group-hover:scale-110">
+      </div>
+      <div class="rounded-2xl overflow-hidden shadow-lg group" style="border-radius: 1.25rem;">
+        <img src="assets/tr4.jpg" alt="Custom floral wedding stationery flat lay" class="w-full h-48 md:h-56 object-cover transition-transform duration-500 group-hover:scale-110">
+      </div>
+    </div>
+
+    <!-- Testimonial cards -->
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-card border border-border rounded-2xl p-6 text-left flex flex-col h-full" style="border-radius: 1.25rem;">
+        <div class="flex items-center gap-1 mb-3">
+          <i class="fas fa-star rating-star text-sm"></i><i class="fas fa-star rating-star text-sm"></i><i class="fas fa-star rating-star text-sm"></i><i class="fas fa-star rating-star text-sm"></i><i class="fas fa-star rating-star text-sm"></i>
+        </div>
+        <p class="text-secondary text-sm leading-relaxed mb-4">"They took our vague Pinterest board and turned it into a suite that felt completely us. The process was fun, not stressful."</p>
+        <div class="flex items-center gap-3 mt-auto">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=150&auto=format&fit=crop" alt="Rachel and Mark" class="w-10 h-10 rounded-full object-cover border border-border shadow-sm">
+          <div>
+            <p class="text-sm font-medium">Rachel & Mark</p>
+            <p class="text-xs text-secondary">Custom Suite · June 2025</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-card border border-border rounded-2xl p-6 text-left flex flex-col h-full" style="border-radius: 1.25rem;">
+        <div class="flex items-center gap-1 mb-3">
+          <i class="fas fa-star rating-star text-sm"></i><i class="fas fa-star rating-star text-sm"></i><i class="fas fa-star rating-star text-sm"></i><i class="fas fa-star rating-star text-sm"></i><i class="fas fa-star rating-star text-sm"></i>
+        </div>
+        <p class="text-secondary text-sm leading-relaxed mb-4">"The sample kit alone sold us. Being able to feel the papers and see the foil colors in person made all the difference."</p>
+        <div class="flex items-center gap-3 mt-auto">
+          <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=150&auto=format&fit=crop" alt="Anita and Kevin" class="w-10 h-10 rounded-full object-cover border border-border shadow-sm">
+          <div>
+            <p class="text-sm font-medium">Anita & Kevin</p>
+            <p class="text-xs text-secondary">Custom Suite · September 2025</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-card border border-border rounded-2xl p-6 text-left flex flex-col h-full" style="border-radius: 1.25rem;">
+        <div class="flex items-center gap-1 mb-3">
+          <i class="fas fa-star rating-star text-sm"></i><i class="fas fa-star rating-star text-sm"></i><i class="fas fa-star rating-star text-sm"></i><i class="fas fa-star rating-star text-sm"></i><i class="fas fa-star rating-star text-sm"></i>
+        </div>
+        <p class="text-secondary text-sm leading-relaxed mb-4">"We had a very specific vision — art deco but not cliché. They nailed it on the first concept and refined it beautifully."</p>
+        <div class="flex items-center gap-3 mt-auto">
+          <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=150&auto=format&fit=crop" alt="Jasmine and Theo" class="w-10 h-10 rounded-full object-cover border border-border shadow-sm">
+          <div>
+            <p class="text-sm font-medium">Jasmine & Theo</p>
+            <p class="text-xs text-secondary">Custom Suite · November 2025</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+  SECTION 6: FINAL CTA / CLOSING — Design consultation form
+  ============================================================ -->
+  <section id="design-form" class="max-w-7xl mx-auto px-5 mb-16 lg:mb-24">
+    <div class="relative rounded-3xl overflow-hidden shadow-2xl grid lg:grid-cols-5" style="border-radius: 1.75rem; background: var(--card-bg); border: 1px solid var(--border-light);">
+      <!-- Left: Image panel -->
+      <div class="relative h-64 lg:h-auto lg:col-span-2">
+        <img src="assets/gf.jpg" alt="Custom wedding stationery design consultation" class="absolute inset-0 w-full h-full object-cover">
+        <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(255,51,102,0.15) 0%, rgba(0,0,0,0.4) 100%);"></div>
+      </div>
+      <!-- Right: Form -->
+      <div class="lg:col-span-3 p-8 md:p-12 text-left">
+        <span class="inline-block text-xs font-semibold tracking-[0.25em] uppercase text-accent mb-3">Start Your Project</span>
+        <h2 class="text-2xl md:text-3xl font-medium mb-3 leading-tight" style="font-weight: 500 !important;">Request a Custom Design Consultation</h2>
+        <p class="text-secondary text-sm leading-relaxed mb-7">Tell us a little about your event and vision. We'll follow up within 1 business day with next steps and a free consultation link.</p>
+
+        <form class="grid grid-cols-1 md:grid-cols-2 gap-4" onsubmit="event.preventDefault(); alert('Thank you! Your custom design request has been received. We\'ll be in touch within 1 business day.');">
+          <div class="md:col-span-1">
+            <label class="block text-xs font-medium mb-1.5 text-secondary">Full Name *</label>
+            <input type="text" required placeholder="Your name" class="w-full bg-transparent border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent transition-colors" style="border-radius: 0.75rem; color: var(--text-primary);">
+          </div>
+          <div class="md:col-span-1">
+            <label class="block text-xs font-medium mb-1.5 text-secondary">Email Address *</label>
+            <input type="email" required placeholder="you@example.com" class="w-full bg-transparent border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent transition-colors" style="border-radius: 0.75rem; color: var(--text-primary);">
+          </div>
+          <div class="md:col-span-1">
+            <label class="block text-xs font-medium mb-1.5 text-secondary">Event Date</label>
+            <input type="date" class="w-full bg-transparent border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent transition-colors" style="border-radius: 0.75rem; color: var(--text-primary);">
+          </div>
+          <div class="md:col-span-1">
+            <label class="block text-xs font-medium mb-1.5 text-secondary">Preferred Style</label>
+            <select class="w-full bg-transparent border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent transition-colors" style="border-radius: 0.75rem; color: var(--text-primary);">
+              <option>Classic Elegance</option>
+              <option>Modern Minimal</option>
+              <option>Floral Romantic</option>
+              <option>Rustic Vintage</option>
+              <option>Not sure yet — need guidance</option>
+            </select>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs font-medium mb-1.5 text-secondary">Tell Us About Your Vision *</label>
+            <textarea required rows="4" placeholder="Share your inspiration, colors, must-haves, or anything else that will help us understand your style..." class="w-full bg-transparent border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent transition-colors resize-none" style="border-radius: 0.75rem; color: var(--text-primary);"></textarea>
+          </div>
+          <div class="md:col-span-2 flex flex-col sm:flex-row items-center gap-4 mt-2">
+            <button type="submit" class="btn-primary px-7 py-3 text-sm font-medium w-full sm:w-auto"><i class="fas fa-paper-plane mr-2"></i>Submit Request</button>
+            <p class="text-xs text-secondary text-center sm:text-left"><i class="fas fa-lock text-accent mr-1"></i>No commitment. We'll respond within 1 business day.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+    <!-- Footer -->
+    <footer class="pt-16 pb-8 border-t border-slate-800"
+        style="background: var(--footer-bg); color: var(--footer-text);">
+        <div class="max-w-7xl mx-auto px-5 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+            <div class="col-span-2 md:col-span-2 lg:col-span-1">
+                <a href="index.html" class="text-xl md:text-2xl font-bold tracking-tight text-accent flex items-center" style="font-weight: 700 !important;"><span class="inline-flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full bg-accent text-white mr-2 shadow-sm flex-shrink-0"><i class="fas fa-pen-fancy text-xs md:text-sm"></i></span><span class="truncate">Vellora</span></a>
+                <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+                    Bespoke wedding invitations and fine stationery designed to perfectly reflect your unique love story.
+                </p>
+                <div class="mt-4 space-y-2 text-xs text-slate-300">
+                    <p class="flex items-center gap-2"><i class="fas fa-phone-flip text-accent"></i> (800) 555-LOVE</p>
+                    <p class="flex items-center gap-2"><i class="far fa-envelope text-accent"></i> hello@elegantinvites.com</p>
+                </div>
+                <div class="flex gap-2.5 mt-5">
+                    <a href="#"
+                        class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-accent flex items-center justify-center transition-all duration-300 text-white"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="#"
+                        class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-accent flex items-center justify-center transition-all duration-300 text-white"><i
+                            class="fab fa-pinterest-p text-sm"></i></a>
+                    <a href="#"
+                        class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-accent flex items-center justify-center transition-all duration-300 text-white"><i
+                            class="fab fa-facebook-f text-sm"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-medium text-sm tracking-wider uppercase text-white mb-4">Collections</h4>
+                <ul class="text-xs space-y-2.5 text-slate-400">
+                    <li><a href="products.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">Classic & Timeless</a></li>
+                    <li><a href="products.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">Modern Minimalist</a></li>
+                    <li><a href="products.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">Floral & Romantic</a></li>
+                    <li><a href="products.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">Rustic & Vintage</a></li>
+                    <li><a href="custom.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">Custom Design</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-medium text-sm tracking-wider uppercase text-white mb-4">Support</h4>
+                <ul class="text-xs space-y-2.5 text-slate-400">
+                    <li><a href="contact.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">Book a Consultation</a></li>
+                    <li><a href="contact.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">Paper & Print Guide</a></li>
+                    <li><a href="contact.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">Ordering Process</a></li>
+                    <li><a href="contact.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">FAQ</a></li>
+                    <li><a href="contact.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-medium text-sm tracking-wider uppercase text-white mb-4">Company</h4>
+                <ul class="text-xs space-y-2.5 text-slate-400">
+                    <li><a href="about.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">Our Story</a></li>
+                    <li><a href="about.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">The Studio</a></li>
+                    <li><a href="contact.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">Testimonials</a>
+                    </li>
+                    <li><a href="login.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">Client Portal</a></li>
+                    <li><a href="contact.html"
+                            class="hover:text-accent hover:translate-x-1 inline-block transition-all duration-200">Press</a></li>
+                </ul>
+            </div>
+            <div class="col-span-2 md:col-span-3 lg:col-span-1">
+                <h4 class="font-medium text-sm tracking-wider uppercase text-white mb-4">Newsletter</h4>
+                <p class="text-xs text-slate-400 mb-3 leading-relaxed">
+                    Subscribe for wedding inspiration, new collection launches, and stationery tips.
+                </p>
+                <form class="flex gap-2 max-w-xs" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
+                    <input type="email" placeholder="Your email address" required
+                        class="bg-slate-800 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 w-full focus:outline-none focus:border-accent transition-colors">
+                    <button type="submit"
+                        class="bg-accent text-white px-3 py-2 rounded-lg text-xs font-medium hover:opacity-90 transition-opacity"><i
+                            class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        <div
+            class="max-w-7xl mx-auto px-5 mt-12 pt-6 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400">
+            <p>© 2026 Vellora. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a href="contact.html" class="hover:text-accent transition-colors">Privacy Policy</a>
+                <a href="contact.html" class="hover:text-accent transition-colors">Terms of Service</a>
+                <a href="contact.html" class="hover:text-accent transition-colors">Cookie Settings</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            const html = document.documentElement;
+            // Theme toggles
+            const themeBtn = document.getElementById('theme-toggle'), mobileTheme = document.getElementById('mobile-theme-btn');
+            const applyTheme = (theme) => { html.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); document.querySelectorAll('.light-icon').forEach(icon => icon.classList.toggle('hidden', theme === 'dark')); document.querySelectorAll('.dark-icon').forEach(icon => icon.classList.toggle('hidden', theme === 'light')); };
+            const initTheme = () => { const stored = localStorage.getItem('theme'); const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches; applyTheme(stored === 'dark' || (!stored && prefers) ? 'dark' : 'light'); };
+            const toggleTheme = () => { const cur = html.getAttribute('data-theme'); applyTheme(cur === 'light' ? 'dark' : 'light'); };
+            themeBtn?.addEventListener('click', toggleTheme); if (mobileTheme) mobileTheme.addEventListener('click', toggleTheme);
+            initTheme();
+            // RTL
+            const langBtn = document.getElementById('lang-icon'), mobileRtl = document.getElementById('mobile-rtl-btn');
+            const toggleRtl = () => { const isRtl = html.getAttribute('dir') === 'rtl'; html.setAttribute('dir', isRtl ? 'ltr' : 'rtl'); localStorage.setItem('dir', isRtl ? 'ltr' : 'rtl'); };
+            if (langBtn) langBtn.addEventListener('click', toggleRtl);
+            if (mobileRtl) mobileRtl.addEventListener('click', toggleRtl);
+            const savedDir = localStorage.getItem('dir') === 'rtl' ? 'rtl' : 'ltr'; html.setAttribute('dir', savedDir);
+            // dropdowns desktop
+            document.querySelectorAll('.dropdown-wrapper').forEach(drop => {
+                const btn = drop.querySelector('.dropdown-toggle');
+                if (window.innerWidth >= 1280) {
+                    drop.addEventListener('mouseenter', () => drop.classList.add('open'));
+                    drop.addEventListener('mouseleave', () => drop.classList.remove('open'));
+                } else {
+                    btn?.addEventListener('click', (e) => { e.preventDefault(); drop.classList.toggle('open'); });
+                }
+            });
+            document.addEventListener('click', (e) => { if (!e.target.closest('.dropdown-wrapper')) document.querySelectorAll('.dropdown-wrapper').forEach(d => d.classList.remove('open')); });
+            // Mobile drawer
+            const drawer = document.getElementById('mobile-drawer'), backdrop = document.getElementById('drawer-backdrop'), panel = document.getElementById('drawer-panel'), openBtn = document.getElementById('mobile-menu-open'), closeBtn = document.getElementById('drawer-close');
+            const openDrawer = () => { drawer.classList.remove('pointer-events-none'); panel.classList.remove('-translate-x-full'); backdrop.classList.add('opacity-100', 'pointer-events-auto'); document.body.style.overflow = 'hidden'; };
+            const closeDrawer = () => { panel.classList.add('-translate-x-full'); backdrop.classList.remove('opacity-100', 'pointer-events-auto'); setTimeout(() => drawer.classList.add('pointer-events-none'), 300); document.body.style.overflow = ''; };
+            openBtn?.addEventListener('click', openDrawer); closeBtn?.addEventListener('click', closeDrawer); backdrop?.addEventListener('click', closeDrawer);
+            document.getElementById('mobile-home-toggle')?.addEventListener('click', () => { document.getElementById('mobile-home-submenu')?.classList.toggle('hidden'); });
+            document.getElementById('mobile-dashboard-toggle')?.addEventListener('click', () => { document.getElementById('mobile-dashboard-submenu')?.classList.toggle('hidden'); });
+            // reveal animation
+            const reveals = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); }); }, { threshold: 0.15 });
+            reveals.forEach(r => observer.observe(r));
+            // Add active nav based on hash
+            const navLinks = document.querySelectorAll('.nav-link, .dropdown-menu a, #mobile-drawer a');
+            navLinks.forEach(link => { link.addEventListener('click', function (e) { if (this.getAttribute('href')?.startsWith('#')) e.preventDefault(); window.location.hash = this.getAttribute('href')?.slice(1) || ''; }); });
+
+            // Dynamic Active Page Highlighter (Desktop & Mobile)
+            const currentPath = window.location.pathname;
+            let currentPage = currentPath.substring(currentPath.lastIndexOf('/') + 1);
+            if (!currentPage || currentPage === '/') currentPage = 'index.html';
+
+            // 1. Clean slate: clear all hardcoded active classes
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('.dropdown-toggle').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('.dropdown-menu a').forEach(link => link.classList.remove('text-accent', 'font-medium'));
+            
+            const mobileDrawer = document.getElementById('mobile-drawer');
+            if (mobileDrawer) {
+                mobileDrawer.querySelectorAll('a').forEach(link => {
+                    link.classList.remove('active', 'text-accent', 'font-medium');
+                });
+                mobileDrawer.querySelectorAll('button').forEach(btn => {
+                    btn.classList.remove('text-accent');
+                });
+                // Reset submenus to hidden
+                const dbSub = document.getElementById('mobile-dashboard-submenu');
+                if (dbSub) dbSub.classList.add('hidden');
+                const homeSub = document.getElementById('mobile-home-submenu');
+                if (homeSub) homeSub.classList.add('hidden');
+            }
+
+            // 2. Desktop Highlighting
+            let desktopMatched = false;
+            document.querySelectorAll('.dropdown-menu a').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage) {
+                    link.classList.add('text-accent', 'font-medium');
+                    const wrapper = link.closest('.dropdown-wrapper');
+                    if (wrapper) {
+                        const toggle = wrapper.querySelector('.dropdown-toggle');
+                        if (toggle) toggle.classList.add('active');
+                    }
+                    desktopMatched = true;
+                }
+            });
+
+            if (!desktopMatched) {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    const wrapper = link.closest('.dropdown-wrapper');
+                    if (!wrapper) {
+                        const href = link.getAttribute('href');
+                        if (href === currentPage) {
+                            link.classList.add('active');
+                        }
+                    }
+                });
+            }
+
+            // 3. Mobile Highlighting
+            if (mobileDrawer) {
+                let mobileMatched = false;
+                mobileDrawer.querySelectorAll('a').forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href === currentPage) {
+                        link.classList.add('active');
+                        if (!link.classList.contains('rounded-full')) {
+                            link.classList.add('text-accent', 'font-medium');
+                        }
+                        
+                        // Handle parents/submenus
+                        const homeSubmenu = document.getElementById('mobile-home-submenu');
+                        const dashboardSubmenu = document.getElementById('mobile-dashboard-submenu');
+                        
+                        if (homeSubmenu && homeSubmenu.contains(link)) {
+                            const homeToggle = document.getElementById('mobile-home-toggle');
+                            if (homeToggle) homeToggle.classList.add('text-accent');
+                            homeSubmenu.classList.remove('hidden');
+                        } else if (dashboardSubmenu && dashboardSubmenu.contains(link)) {
+                            const dashboardToggle = document.getElementById('mobile-dashboard-toggle');
+                            if (dashboardToggle) dashboardToggle.classList.add('text-accent');
+                            dashboardSubmenu.classList.remove('hidden');
+                        }
+                        mobileMatched = true;
+                    }
+                });
+
+                // Fallback for index.html / home2.html / empty path
+                if (!mobileMatched && (currentPage === 'index.html' || currentPage === 'home2.html')) {
+                    const homeToggle = document.getElementById('mobile-home-toggle');
+                    if (homeToggle) homeToggle.classList.add('text-accent');
+                    const homeSubmenu = document.getElementById('mobile-home-submenu');
+                    if (homeSubmenu) homeSubmenu.classList.remove('hidden');
+                    
+                    const matchingLink = mobileDrawer.querySelector(`a[href="${currentPage}"]`);
+                    if (matchingLink) {
+                        matchingLink.classList.add('active', 'text-accent', 'font-medium');
+                    }
+                }
+            }
+        })();
+    </script>
+    <!-- home2.html redirect simulation: if path includes home2.html, just update theme but fully functional -->
+    <script>
+        // MOCK support for home2 version (just stays same design but content identical, but we respect current page path)
+        if (window.location.pathname.includes('home2.html')) { document.title = "AutoFixSwift | Performance Pro Edition"; }
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
