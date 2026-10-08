@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>404 · Vellora</title>
+    <!-- Tailwind + FontAwesome (same as main) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        /* ===== DARK THEME VARIABLES (consistent with main) ===== */
+        :root {
+            --bg-body: #0B0A0C;
+            --text-primary: #F5F3F0;
+            --text-secondary: #A8A5A0;
+            --accent: #FF4D79;
+            --accent-dark: #E6004C;
+            --card-bg: #1A181B;
+            --border-light: #2E2A2C;
+            --hover-bg: #2A1F24;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-body);
+            color: var(--text-primary);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            transition: background 0.25s ease, color 0.2s;
+        }
+
+        .text-accent {
+            color: var(--accent);
+        }
+
+        .bg-accent {
+            background-color: var(--accent);
+        }
+
+        .border-accent {
+            border-color: var(--accent);
+        }
+
+        /* RTL support for flex layout */
+        html[dir="rtl"] .rtl-flip {
+            transform: scaleX(-1);
+        }
+
+        /* subtle glow */
+        .glow {
+            text-shadow: 0 0 30px rgba(255, 77, 121, 0.3);
+        }
+
+        /* card style */
+        .error-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 2rem;
+            padding: 2.5rem 2rem;
+            max-width: 560px;
+            width: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            transition: transform 0.2s ease;
+        }
+
+        /* logo hover */
+        .logo-hover:hover {
+            opacity: 0.85;
+        }
+
+        /* button style */
+        .btn-primary {
+            background: var(--accent);
+            color: #0B0A0C !important;
+            font-weight: 600;
+            border-radius: 9999px;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+            padding: 0.75rem 2rem;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            box-shadow: 0 4px 14px 0 rgba(255, 77, 121, 0.35);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px 0 rgba(255, 77, 121, 0.45);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary) !important;
+            border: 1.5px solid var(--border-light);
+            border-radius: 9999px;
+            padding: 0.75rem 2rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            background: var(--hover-bg);
+            color: var(--accent) !important;
+        }
+
+        /* lang / theme icon button */
+        .icon-btn {
+            background: transparent;
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            width: 44px;
+            height: 44px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .icon-btn:hover {
+            background: var(--hover-bg);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* RTL icon rotation for dir toggle */
+        html[dir="rtl"] .dir-icon {
+            transform: rotate(180deg);
+        }
+
+        /* responsive */
+        @media (max-width: 480px) {
+            .error-card {
+                padding: 2rem 1.25rem;
+                border-radius: 1.5rem;
+            }
+            .error-code {
+                font-size: 5rem !important;
+            }
+        }
+
+        /* fade-in */
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main 404 card — no header, no footer -->
+    <div class="error-card fade-in mx-4 relative">
+        <!-- Top row: logo left, icons right -->
+        <div class="flex items-center justify-between mb-6">
+            <!-- Logo (same as main, but dark theme) -->
+            <a href="index.html" class="flex items-center gap-2.5 logo-hover transition-opacity" style="text-decoration: none;">
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-accent text-white shadow-sm flex-shrink-0">
+                    <i class="fas fa-pen-fancy text-sm"></i>
+                </span>
+                <span class="text-xl font-bold tracking-tight text-accent" style="font-weight: 700 !important;">Vellora</span>
+            </a>
+
+            <!-- Icons: RTL/LTR toggle + theme toggle (visual only) -->
+            <div class="flex items-center gap-2.5">
+                <!-- RTL / LTR toggle -->
+                <button id="dir-toggle" class="icon-btn" aria-label="Toggle text direction" title="Toggle RTL/LTR">
+                    <i class="fas fa-exchange-alt dir-icon"></i>
+                </button>
+                <!-- Theme toggle (dark/light) — purely visual, keeps dark default -->
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark/light" title="Toggle theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 404 content -->
+        <div class="text-center">
+            <div class="error-code text-8xl md:text-9xl font-bold text-accent glow leading-none mb-2" style="font-weight: 800 !important;">404</div>
+            <h1 class="text-2xl md:text-3xl font-medium mb-3" style="font-weight: 500 !important;">Page not found</h1>
+            <p class="text-secondary text-sm md:text-base leading-relaxed max-w-sm mx-auto mb-8" style="color: var(--text-secondary);">
+                The page you are looking for doesn't exist or has been moved. Let's get you back to something beautiful.
+            </p>
+
+            <!-- Actions -->
+            <div class="flex flex-wrap items-center justify-center gap-3">
+                <a href="index.html" class="btn-primary">
+                    <i class="fas fa-home text-xs"></i> Back to home
+                </a>
+                <a href="contact.html" class="btn-outline">
+                    <i class="fas fa-envelope text-xs"></i> Contact us
+                </a>
+            </div>
+
+            <!-- subtle divider -->
+            <div class="mt-8 pt-6 border-t border-border-light flex justify-center gap-6 text-xs text-secondary" style="border-color: var(--border-light); color: var(--text-secondary);">
+                <span><i class="fas fa-pen-fancy text-accent mr-1"></i> Vellora</span>
+                <span><i class="fas fa-heart text-accent mr-1"></i> Wedding stationery</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        (function() {
+            const html = document.documentElement;
+
+            // ---------- THEME TOGGLE (dark <-> light, but page is built dark) ----------
+            const themeBtn = document.getElementById('theme-toggle');
+            const themeIcon = themeBtn.querySelector('i');
+
+            // We keep dark theme by default, but allow toggle to light for convenience
+            const applyTheme = (theme) => {
+                html.setAttribute('data-theme', theme);
+                localStorage.setItem('vellora-404-theme', theme);
+                // Update icon
+                if (theme === 'dark') {
+                    themeIcon.className = 'fas fa-sun';
+                } else {
+                    themeIcon.className = 'fas fa-moon';
+                }
+                // Update CSS variables for light/dark
+                if (theme === 'light') {
+                    // Light overrides
+                    document.documentElement.style.setProperty('--bg-body', '#FFFFFF');
+                    document.documentElement.style.setProperty('--text-primary', '#1A1A1A');
+                    document.documentElement.style.setProperty('--text-secondary', '#5A5A5A');
+                    document.documentElement.style.setProperty('--card-bg', '#FFFFFF');
+                    document.documentElement.style.setProperty('--border-light', '#EBEBEB');
+                    document.documentElement.style.setProperty('--hover-bg', '#FFF0F5');
+                    // Accent stays vibrant
+                } else {
+                    // Dark (default)
+                    document.documentElement.style.setProperty('--bg-body', '#0B0A0C');
+                    document.documentElement.style.setProperty('--text-primary', '#F5F3F0');
+                    document.documentElement.style.setProperty('--text-secondary', '#A8A5A0');
+                    document.documentElement.style.setProperty('--card-bg', '#1A181B');
+                    document.documentElement.style.setProperty('--border-light', '#2E2A2C');
+                    document.documentElement.style.setProperty('--hover-bg', '#2A1F24');
+                }
+            };
+
+            // Init theme from localStorage or default dark
+            const storedTheme = localStorage.getItem('vellora-404-theme');
+            if (storedTheme === 'light') {
+                applyTheme('light');
+            } else {
+                applyTheme('dark');
+            }
+
+            themeBtn.addEventListener('click', () => {
+                const current = html.getAttribute('data-theme');
+                applyTheme(current === 'dark' ? 'light' : 'dark');
+            });
+
+            // ---------- RTL / LTR TOGGLE ----------
+            const dirBtn = document.getElementById('dir-toggle');
+            // Load saved direction
+            const savedDir = localStorage.getItem('vellora-404-dir') || 'ltr';
+            html.setAttribute('dir', savedDir);
+            // Update icon rotation for RTL
+            if (savedDir === 'rtl') {
+                dirBtn.querySelector('i').style.transform = 'rotate(180deg)';
+            } else {
+                dirBtn.querySelector('i').style.transform = 'rotate(0deg)';
+            }
+
+            dirBtn.addEventListener('click', () => {
+                const currentDir = html.getAttribute('dir');
+                const newDir = currentDir === 'rtl' ? 'ltr' : 'rtl';
+                html.setAttribute('dir', newDir);
+                localStorage.setItem('vellora-404-dir', newDir);
+                // Update icon
+                const icon = dirBtn.querySelector('i');
+                icon.style.transform = newDir === 'rtl' ? 'rotate(180deg)' : 'rotate(0deg)';
+                // Small animation
+                icon.style.transition = 'transform 0.2s ease';
+            });
+
+            // Optional: sync with main site's localStorage keys if they exist (for consistency)
+            // But we use separate keys to avoid conflicts on 404 page.
+            // However we can also read the main site's 'dir' and 'theme' for a unified experience.
+            const mainDir = localStorage.getItem('dir');
+            if (mainDir === 'rtl' && savedDir !== 'rtl') {
+                // If main site had RTL, we could adopt it, but let's keep 404 separate.
+                // Actually, for better UX, we can adopt main site's direction if present:
+                // (optional — uncomment next lines if you want to inherit)
+                // html.setAttribute('dir', 'rtl');
+                // localStorage.setItem('vellora-404-dir', 'rtl');
+                // dirBtn.querySelector('i').style.transform = 'rotate(180deg)';
+            }
+        })();
+    </script>
+</body>
+</html>
